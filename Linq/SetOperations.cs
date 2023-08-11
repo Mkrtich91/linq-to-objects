@@ -22,7 +22,7 @@ namespace Linq
         {
             int[] numbers = { 2, 2, 3, 5, 5 };
 
-            throw new NotImplementedException();
+            return numbers.Distinct();
         }
 
         /// <summary>
@@ -33,7 +33,9 @@ namespace Linq
         {
             List<Product> products = Products.ProductList;
 
-            throw new NotImplementedException();
+            var uniqueCategoryNames = products.Select(product => product.Category).Distinct();
+
+            return uniqueCategoryNames;
         }
 
         /// <summary>
@@ -45,7 +47,9 @@ namespace Linq
             int[] numbersA = { 0, 2, 4, 5, 6, 8, 9 };
             int[] numbersB = { 1, 3, 5, 7, 8 };
 
-            throw new NotImplementedException();
+            var uniqueNumbers = numbersA.Union(numbersB);
+
+            return uniqueNumbers;
         }
 
         /// <summary>
@@ -57,7 +61,11 @@ namespace Linq
             List<Product> products = Products.ProductList;
             List<Customer> customers = Customers.CustomerList;
 
-            throw new NotImplementedException();
+            var uniqueFirstLetters = products
+        .Select(product => product.ProductName.FirstOrDefault())
+        .Union(customers.Select(customer => customer.CompanyName.FirstOrDefault()));
+
+            return uniqueFirstLetters;
         }
 
         /// <summary>
@@ -69,7 +77,7 @@ namespace Linq
             int[] numbersA = { 0, 2, 4, 5, 6, 8, 9 };
             int[] numbersB = { 1, 3, 5, 7, 8 };
 
-            throw new NotImplementedException();
+            return numbersA.Intersect(numbersB);
         }
 
         /// <summary>
@@ -81,7 +89,11 @@ namespace Linq
             List<Product> products = Products.ProductList;
             List<Customer> customers = Customers.CustomerList;
 
-            throw new NotImplementedException();
+            var commonFirstLetters = products
+         .Select(product => product.ProductName.FirstOrDefault())
+         .Intersect(customers.Select(customer => customer.CompanyName.FirstOrDefault()));
+
+            return commonFirstLetters;
         }
 
         /// <summary>
@@ -93,7 +105,9 @@ namespace Linq
             int[] numbersA = { 0, 2, 4, 5, 6, 8, 9 };
             int[] numbersB = { 1, 3, 5, 7, 8 };
 
-            throw new NotImplementedException();
+            var difference = numbersA.Except(numbersB);
+
+            return difference;
         }
 
         /// <summary>
@@ -105,7 +119,12 @@ namespace Linq
             List<Product> products = Products.ProductList;
             List<Customer> customers = Customers.CustomerList;
 
-            throw new NotImplementedException();
+            var productFirstLetters = products.Select(product => product.ProductName.FirstOrDefault());
+            var customerFirstLetters = customers.Select(customer => customer.CompanyName.FirstOrDefault());
+
+            var difference = productFirstLetters.Except(customerFirstLetters);
+
+            return difference;
         }
     }
 }

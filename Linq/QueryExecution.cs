@@ -15,19 +15,11 @@ namespace Linq
         {
             var numbers = new List<int> { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
 
-            // TODO: Create a LINQ query that finds all array elements with a value greater than 5, and assign it to the variable numberMore5.
-            IEnumerable<int> numberMore5 = null;
+            var numberMore5 = numbers.Where(number => number > 5);
 
             numbers.Add(10);
 
-            var result = new List<int>();
-
-            foreach (var item in numberMore5)
-            {
-                result.Add(item);
-            }
-
-            return result;
+            return numberMore5;
         }
 
         /// <summary>
@@ -38,19 +30,11 @@ namespace Linq
         {
             var numbers = new List<int> { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
 
-            // TODO: Create a LINQ query that finds all array elements with a value greater than 5, and assign it to the variable numberMore5.
-            IEnumerable<int> numberMore5 = null;
+            var numberMore5 = numbers.Where(number => number > 5).ToList();
 
             numbers.Add(10);
 
-            var result = new List<int>();
-
-            foreach (var item in numberMore5)
-            {
-                result.Add(item);
-            }
-
-            return result;
+            return numberMore5;
         }
     }
 }

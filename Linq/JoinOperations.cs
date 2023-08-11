@@ -30,8 +30,14 @@ namespace Linq
             };
 
             List<Product> products = Products.ProductList;
+            var joinedQuery = categories
+                   .Join(
+                       products,
+                       category => category,
+                       product => product.Category,
+                       (category, product) => (category, product.ProductName));
 
-            throw new NotImplementedException();
+            return joinedQuery;
         }
 
         /// <summary>
@@ -51,7 +57,14 @@ namespace Linq
 
             List<Product> products = Products.ProductList;
 
-            throw new NotImplementedException();
+            var groupedProducts = categories
+        .GroupJoin(
+            products,
+            category => category,
+            product => product.Category,
+            (category, matchedProducts) => (category, matchedProducts));
+
+            return groupedProducts;
         }
 
         /// <summary>
@@ -73,7 +86,19 @@ namespace Linq
 
             List<Product> products = Products.ProductList;
 
-            throw new NotImplementedException();
+            var leftOuterJoined = categories
+        .GroupJoin(
+            products,
+            category => category,
+            product => product.Category,
+            (category, categoryProducts) => new { Category = category, Products = categoryProducts })
+        .SelectMany(
+            categoryInfo =>
+            categoryInfo.Products.DefaultIfEmpty(),
+            (categoryInfo, product) =>
+                (categoryInfo.Category, productName: product == null ? "(No products)" : product.ProductName));
+
+            return leftOuterJoined;
         }
     }
 }

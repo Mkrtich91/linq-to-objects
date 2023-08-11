@@ -23,7 +23,8 @@ namespace Linq
         {
             string[] words = { "cherry", "apple", "blueberry" };
 
-            throw new NotImplementedException();
+            var a = words.OrderBy(x => x);
+            return a;
         }
 
         /// <summary>
@@ -34,7 +35,7 @@ namespace Linq
         {
             string[] words = { "cherry", "apple", "blueberry" };
 
-            throw new NotImplementedException();
+            return words.OrderBy(word => word.Length);
         }
 
         /// <summary>
@@ -45,7 +46,8 @@ namespace Linq
         {
             List<Product> products = Products.ProductList;
 
-            throw new NotImplementedException();
+            var v = products.OrderBy(x => x.ProductName);
+            return v;
         }
 
         /// <summary>
@@ -56,7 +58,8 @@ namespace Linq
         {
             string[] words = { "aPPLE", "AbAcUs", "bRaNcH", "BlUeBeRrY", "ClOvEr", "cHeRry" };
 
-            throw new NotImplementedException();
+            var w = words.OrderBy(x => x);
+            return w;
         }
 
         /// <summary>
@@ -67,7 +70,8 @@ namespace Linq
         {
             double[] doubles = { 1.7, 2.3, 1.9, 4.1, 2.9 };
 
-            throw new NotImplementedException();
+            var numsor = doubles.OrderByDescending(x => x);
+            return numsor;
         }
 
         /// <summary>
@@ -78,7 +82,8 @@ namespace Linq
         {
             List<Product> products = Products.ProductList;
 
-            throw new NotImplementedException();
+            var pr = products.OrderByDescending(x => x.UnitsInStock);
+            return pr;
         }
 
         /// <summary>
@@ -89,7 +94,8 @@ namespace Linq
         {
             string[] words = { "aPPLE", "AbAcUs", "bRaNcH", "BlUeBeRrY", "ClOvEr", "cHeRry" };
 
-            throw new NotImplementedException();
+            var word = words.OrderByDescending(x => x);
+            return word;
         }
 
         /// <summary>
@@ -100,7 +106,12 @@ namespace Linq
         {
             string[] digits = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
 
-            throw new NotImplementedException();
+            var sortedDigits = digits.OrderBy(digit => digit.Length).ThenBy(digit => digit);
+
+            foreach (var digit in sortedDigits)
+            {
+                yield return digit;
+            }
         }
 
         /// <summary>
@@ -111,7 +122,12 @@ namespace Linq
         {
             string[] words = { "aPPLE", "AbAcUs", "bRaNcH", "BlUeBeRrY", "ClOvEr", "cHeRry" };
 
-            throw new NotImplementedException();
+            var sortedWords = words.OrderBy(word => word.Length).ThenBy(word => word, StringComparer.OrdinalIgnoreCase);
+
+            foreach (var word in sortedWords)
+            {
+                yield return word;
+            }
         }
 
         /// <summary>
@@ -121,8 +137,14 @@ namespace Linq
         public static IEnumerable<Product> ThenByDifferentOrdering()
         {
             List<Product> products = Products.ProductList;
+            var sortedProducts = products
+           .OrderBy(product => product.Category)
+           .ThenByDescending(product => product.UnitPrice);
 
-            throw new NotImplementedException();
+            foreach (var product in sortedProducts)
+            {
+                yield return product;
+            }
         }
 
         /// <summary>
@@ -133,7 +155,14 @@ namespace Linq
         {
             string[] words = { "aPPLE", "AbAcUs", "bRaNcH", "BlUeBeRrY", "ClOvEr", "cHeRry" };
 
-            throw new NotImplementedException();
+            var sortedWords = words
+           .OrderBy(word => word.Length)
+           .ThenByDescending(word => word, StringComparer.OrdinalIgnoreCase);
+
+            foreach (var word in sortedWords)
+            {
+                yield return word;
+            }
         }
 
         /// <summary>
@@ -144,7 +173,13 @@ namespace Linq
         {
             string[] digits = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
 
-            throw new NotImplementedException();
+            var selectedDigits = digits.Where(digit => digit.Length > 1 && digit[1] == 'i');
+            var reversedDigits = selectedDigits.Reverse();
+
+            foreach (var digit in reversedDigits)
+            {
+                yield return digit;
+            }
         }
     }
 }

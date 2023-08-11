@@ -21,7 +21,9 @@ namespace Linq
         {
             int[] numbers = { 2, 2, 3, 5, 5 };
 
-            throw new NotImplementedException();
+            int count = numbers.Length;
+
+            return count;
         }
 
         /// <summary>
@@ -32,7 +34,9 @@ namespace Linq
         {
             int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
 
-            throw new NotImplementedException();
+            int count = numbers.Count(number => number % 2 != 0);
+
+            return count;
         }
 
         /// <summary>
@@ -42,8 +46,10 @@ namespace Linq
         public static IEnumerable<(string customerId, int orderCount)> CustomersOrdersCount()
         {
             List<Customer> customers = Customers.CustomerList;
+            var customerOrderCounts = customers.Select(customer =>
+        (customerId: customer.CustomerId, orderCount: customer.Orders.Length));
 
-            throw new NotImplementedException();
+            return customerOrderCounts;
         }
 
         /// <summary>
@@ -54,7 +60,11 @@ namespace Linq
         {
             List<Product> products = Products.ProductList;
 
-            throw new NotImplementedException();
+            var categoryProductCounts = products
+        .GroupBy(product => product.Category)
+        .Select(group => (category: group.Key, productCount: group.Count()));
+
+            return categoryProductCounts;
         }
 
         /// <summary>
@@ -65,7 +75,7 @@ namespace Linq
         {
             int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
 
-            throw new NotImplementedException();
+            return numbers.Sum();
         }
 
         /// <summary>
@@ -76,7 +86,9 @@ namespace Linq
         {
             string[] words = { "cherry", "apple", "blueberry" };
 
-            throw new NotImplementedException();
+            int totalLength = words.Sum(word => word.Length);
+
+            return totalLength;
         }
 
         /// <summary>
@@ -87,7 +99,11 @@ namespace Linq
         {
             List<Product> products = Products.ProductList;
 
-            throw new NotImplementedException();
+            var categoryTotalUnits = products
+       .GroupBy(product => product.Category)
+       .Select(group => (category: group.Key, totalUnitsInStock: group.Sum(product => product.UnitsInStock)));
+
+            return categoryTotalUnits;
         }
 
         /// <summary>
@@ -98,18 +114,22 @@ namespace Linq
         {
             int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
 
-            throw new NotImplementedException();
+            int lowestNumber = numbers.Min();
+
+            return lowestNumber;
         }
 
         /// <summary>
         /// Calculates the length of the shortest word in an array.
         /// </summary>
-        /// <returns></returns>
+        /// <returns> shortest word in an array.</returns>
         public static int MinByLength()
         {
             string[] words = { "cherry", "apple", "blueberry" };
 
-            throw new NotImplementedException();
+            int shortestLength = words.Min(word => word.Length);
+
+            return shortestLength;
         }
 
         /// <summary>
@@ -120,7 +140,11 @@ namespace Linq
         {
             List<Product> products = Products.ProductList;
 
-            throw new NotImplementedException();
+            var cheapestPricesByCategory = products
+         .GroupBy(product => product.Category)
+         .Select(group => (category: group.Key, cheapestPrice: group.Min(product => product.UnitPrice)));
+
+            return cheapestPricesByCategory;
         }
 
         /// <summary>
@@ -131,7 +155,9 @@ namespace Linq
         {
             int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
 
-            throw new NotImplementedException();
+            int highestNumber = numbers.Max();
+
+            return highestNumber;
         }
 
         /// <summary>
@@ -142,7 +168,9 @@ namespace Linq
         {
             string[] words = { "cherry", "apple", "blueberry" };
 
-            throw new NotImplementedException();
+            int longestLength = words.Max(word => word.Length);
+
+            return longestLength;
         }
 
         /// <summary>
@@ -153,7 +181,11 @@ namespace Linq
         {
             List<Product> products = Products.ProductList;
 
-            throw new NotImplementedException();
+            var cheapestPricesByCategory = products
+          .GroupBy(product => product.Category)
+          .Select(group => (category: group.Key, cheapestPrice: group.Max(product => product.UnitPrice)));
+
+            return cheapestPricesByCategory;
         }
 
         /// <summary>
@@ -164,7 +196,7 @@ namespace Linq
         {
             int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
 
-            throw new NotImplementedException();
+            return numbers.Average();
         }
 
         /// <summary>
@@ -175,7 +207,9 @@ namespace Linq
         {
             string[] words = { "cherry", "apple", "blueberry" };
 
-            throw new NotImplementedException();
+            double shortestLength = words.Average(word => word.Length);
+
+            return shortestLength;
         }
 
         /// <summary>
@@ -186,7 +220,11 @@ namespace Linq
         {
             List<Product> products = Products.ProductList;
 
-            throw new NotImplementedException();
+            var averagePricesByCategory = products
+          .GroupBy(product => product.Category)
+          .Select(group => (Category: group.Key, averagePrice: group.Average(product => product.UnitPrice)));
+
+            return averagePricesByCategory;
         }
 
         /// <summary>
@@ -197,7 +235,9 @@ namespace Linq
         {
             double[] doubles = { 1.7, 2.3, 1.9, 4.1, 2.9 };
 
-            throw new NotImplementedException();
+            double totalProduct = doubles.Aggregate((acc, next) => acc * next);
+
+            return totalProduct;
         }
 
         /// <summary>
@@ -210,7 +250,9 @@ namespace Linq
 
             int[] attemptedWithdrawals = { 20, 10, 40, 50, 10, 70, 30 };
 
-            throw new NotImplementedException();
+            double remainingBalance = attemptedWithdrawals.Aggregate(startBalance, (balance, withdrawal) => withdrawal <= balance ? balance - withdrawal : balance);
+
+            return remainingBalance;
         }
     }
 }

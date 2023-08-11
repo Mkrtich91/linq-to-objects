@@ -23,7 +23,9 @@ namespace Linq
             var wordsA = new[] { "cherry", "apple", "blueberry" };
             var wordsB = new[] { "cherry", "apple", "blueberry" };
 
-            throw new NotImplementedException();
+            bool sequencesMatch = wordsA.SequenceEqual(wordsB);
+
+            return sequencesMatch;
         }
 
         /// <summary>
@@ -35,7 +37,9 @@ namespace Linq
             var wordsA = new[] { "cherry", "apple", "blueberry" };
             var wordsB = new[] { "apple", "blueberry", "cherry" };
 
-            throw new NotImplementedException();
+            bool sequencesMatch = wordsA.SequenceEqual(wordsB);
+
+            return sequencesMatch;
         }
 
         /// <summary>
@@ -46,7 +50,13 @@ namespace Linq
         {
             string[] words = { "believe", "relief", "receipt", "field" };
 
-            throw new NotImplementedException();
+#pragma warning disable CA1307
+            bool containsEi = (from word in words
+                               where word.Contains("ei")
+                               select word).Any();
+#pragma warning restore CA1307
+
+            return containsEi;
         }
 
         /// <summary>
@@ -55,9 +65,13 @@ namespace Linq
         /// <returns>Grouped product categories with zero units in stock.</returns>
         public static IEnumerable<(string category, IEnumerable<Product> products)> GroupedAnyMatchedElements()
         {
-            List<Product> products = Products.ProductList;
+            List<Product> products = Products.ProductList; // Assuming you have a Products class with a ProductList property
+            var categoriesWithUnits = products
+          .GroupBy(product => product.Category)
+          .Where(categoryGroup => categoryGroup.Any(product => product.UnitsInStock == 0))
+          .Select(categoryGroup => (categoryGroup.Key, products: categoryGroup.Select(product => product)));
 
-            throw new NotImplementedException();
+            return categoriesWithUnits;
         }
 
         /// <summary>
@@ -68,7 +82,12 @@ namespace Linq
         {
             int[] numbers = { 1, 11, 3, 19, 41, 65, 19 };
 
-            throw new NotImplementedException();
+            bool allOdd = Array.TrueForAll(numbers, delegate(int item)
+            {
+                return item % 2 != 0;
+            });
+
+            return allOdd;
         }
 
         /// <summary>
@@ -78,8 +97,12 @@ namespace Linq
         public static IEnumerable<(string category, IEnumerable<Product> products)> GroupedAllMatchedElements()
         {
             List<Product> products = Products.ProductList;
+            var categoriesWithUnits = from product in products
+                                      group product by product.Category into categoryGroup
+                                      where categoryGroup.All(product => product.UnitsInStock > 0)
+                                      select (categoryGroup.Key, categoryGroup.Select(product => product));
 
-            throw new NotImplementedException();
+            return categoriesWithUnits;
         }
 
         /// <summary>
@@ -90,7 +113,12 @@ namespace Linq
         {
             int[] numbers = { 2, 3, 4 };
 
-            throw new NotImplementedException();
+            bool containsThree = Array.Exists(numbers, delegate(int item)
+            {
+                return item == 3;
+            });
+
+            return containsThree;
         }
     }
 }

@@ -20,7 +20,9 @@ namespace Linq
         {
             int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
 
-            throw new NotImplementedException();
+            var lowNumbers = numbers.Where(number => number < 5);
+
+            return lowNumbers;
         }
 
         /// <summary>
@@ -31,7 +33,8 @@ namespace Linq
         {
             List<Product> products = Products.ProductList;
 
-            throw new NotImplementedException();
+            var ap = products.Where(u => u.UnitsInStock == 0);
+            return ap;
         }
 
         /// <summary>
@@ -41,8 +44,9 @@ namespace Linq
         public static IEnumerable<Product> ExpensiveProductsInStock()
         {
             List<Product> products = Products.ProductList;
+            var expensiveProducts = products.Where(product => product.UnitPrice > 50.0m && product.UnitsInStock > 0);
 
-            throw new NotImplementedException();
+            return expensiveProducts;
         }
 
         /// <summary>
@@ -53,7 +57,9 @@ namespace Linq
         {
             string[] digits = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
 
-            throw new NotImplementedException();
+            var selectedDigits = digits.Where((digit, index) => digit.Length < index);
+
+            return selectedDigits;
         }
     }
 }

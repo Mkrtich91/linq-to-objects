@@ -21,8 +21,7 @@ namespace Linq
         public static Product FirstElement()
         {
             List<Product> products = Products.ProductList;
-
-            throw new NotImplementedException();
+            return products.Find(product => product.ProductId == 11);
         }
 
         /// <summary>
@@ -33,7 +32,9 @@ namespace Linq
         {
             string[] strings = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
 
-            throw new NotImplementedException();
+            var firstElement = Array.Find(strings, str => str.StartsWith("o", StringComparison.OrdinalIgnoreCase));
+
+            return firstElement;
         }
 
         /// <summary>
@@ -43,21 +44,25 @@ namespace Linq
         /// <returns>The value 0.</returns>
         public static int MaybeFirstElement()
         {
-            int[] numbers = { };
+            int[] numbers = Array.Empty<int>();
 
-            throw new NotImplementedException();
+            var firstElement = numbers.FirstOrDefault();
+
+            return firstElement;
         }
 
-        /// <summary>
-        /// Tries to get the first product whose `ProductId` is `789` as a single `Product` object,
-        /// unless there is no match, in which case `null` is returned.
-        /// </summary>
-        /// <returns>The value null.</returns>
+            /// <summary>
+            /// Tries to get the first product whose `ProductId` is `789` as a single `Product` object,
+            /// unless there is no match, in which case `null` is returned.
+            /// </summary>
+            /// <returns>The value null.</returns>
         public static Product MaybeFirstMatchingElement()
         {
             List<Product> products = Products.ProductList;
 
-            throw new NotImplementedException();
+            var matchingProduct = products.Find(product => product.ProductId == 789);
+
+            return matchingProduct;
         }
 
         /// <summary>
@@ -69,7 +74,9 @@ namespace Linq
         {
             int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
 
-            throw new NotImplementedException();
+            var secondNumberGreaterThan5 = numbers.Where(number => number > 5).ElementAtOrDefault(1);
+
+            return secondNumberGreaterThan5;
         }
 
         /// <summary>
@@ -80,7 +87,11 @@ namespace Linq
         {
             string[] strings = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
 
-            throw new NotImplementedException();
+#pragma warning disable CA1307
+            var lastElementWithO = strings.LastOrDefault(predicate: str => str.Contains('o'));
+#pragma warning restore CA1307
+
+            return lastElementWithO;
         }
 
         /// <summary>
@@ -90,9 +101,11 @@ namespace Linq
         /// <returns>The value 0.</returns>
         public static int MaybeLastElement()
         {
-            int[] numbers = { };
+            int[] numbers = Array.Empty<int>();
 
-            throw new NotImplementedException();
+            var lastElement = numbers.LastOrDefault();
+
+            return lastElement;
         }
 
         /// <summary>
@@ -104,7 +117,21 @@ namespace Linq
         {
             string[] strings = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
 
-            throw new NotImplementedException();
+            try
+            {
+#pragma warning disable CA1307
+                var matchingElement = strings.Single(str => str.Contains('o'));
+#pragma warning restore CA1307
+                return matchingElement;
+            }
+            catch (InvalidOperationException ex) when (ex.Message == "Sequence contains more than one matching element")
+            {
+                throw new InvalidOperationException("More than one matching element exists.");
+            }
+            catch (InvalidOperationException ex) when (ex.Message == "Sequence contains no matching element")
+            {
+                throw new InvalidOperationException("No matching element found.");
+            }
         }
 
         /// <summary>
@@ -116,19 +143,35 @@ namespace Linq
         {
             string[] strings = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
 
-            throw new NotImplementedException();
+            try
+            {
+#pragma warning disable CA1307
+                var matchingElement = strings.Single(str => str.Contains('o'));
+#pragma warning restore CA1307
+                return matchingElement;
+            }
+            catch (InvalidOperationException ex) when (ex.Message == "Sequence contains no matching element")
+            {
+                throw new InvalidOperationException("No matching element found.");
+            }
         }
 
         /// <summary>
         /// Tries to find the only element of a sequence that contains symbol 'o'
-        /// and returns a default value since no such element exists
+        /// and returns a default value since no such element exists.
         /// </summary>
         /// <returns>The value null.</returns>
         public static string MaybeSingleMatchingElement()
         {
             string[] strings = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
 
-            throw new NotImplementedException();
+#pragma warning disable CA1307
+            var matchingElements = strings.Where(predicate: str => str.Contains('o')).ToList();
+#pragma warning restore CA1307
+
+            var singleElement = matchingElements.Count == 1 ? matchingElements[0] : null;
+
+            return singleElement;
         }
     }
 }

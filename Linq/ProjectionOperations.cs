@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Linq.DataSources;
 
 namespace Linq
@@ -20,7 +21,9 @@ namespace Linq
         {
             int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
 
-            throw new NotImplementedException();
+            var incrementedNumbers = numbers.Select(number => number + 1);
+
+            return incrementedNumbers;
         }
 
         /// <summary>
@@ -31,7 +34,9 @@ namespace Linq
         {
             List<Product> products = Products.ProductList;
 
-            throw new NotImplementedException();
+            var productNames = products.Select(product => product.ProductName);
+
+            return productNames;
         }
 
         /// <summary>
@@ -43,7 +48,9 @@ namespace Linq
             int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
             string[] strings = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
 
-            throw new NotImplementedException();
+            var textNumbers = numbers.Select(number => strings[number]);
+
+            return textNumbers;
         }
 
         /// <summary>
@@ -54,7 +61,11 @@ namespace Linq
         {
             string[] words = { "aPPLE", "BlUeBeRrY", "cHeRry" };
 
-            throw new NotImplementedException();
+#pragma warning disable CA1304
+            var wordCases = words.Select(selector: word => (upper: word.ToUpper(), lower: word.ToLower()));
+#pragma warning restore CA1304
+
+            return wordCases;
         }
 
         /// <summary>
@@ -66,7 +77,10 @@ namespace Linq
             int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
             string[] strings = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
 
-            throw new NotImplementedException();
+            var result = numbers
+            .Select(n => (digit: strings[n], even: n % 2 == 0));
+
+            return result;
         }
 
         /// <summary>
@@ -77,7 +91,10 @@ namespace Linq
         {
             List<Product> products = Products.ProductList;
 
-            throw new NotImplementedException();
+            var result = products
+             .Select(p => (p.ProductName, category: p.Category, price: p.UnitPrice));
+
+            return result;
         }
 
         /// <summary>
@@ -88,7 +105,10 @@ namespace Linq
         {
             int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
 
-            throw new NotImplementedException();
+            var result = numbers
+             .Select((num, index) => (number: num, inPlace: num == index));
+
+            return result;
         }
 
         /// <summary>
@@ -100,7 +120,11 @@ namespace Linq
             int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
             string[] digits = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
 
-            throw new NotImplementedException();
+            var result = numbers
+             .Where(num => num < 5)
+             .Select(num => digits[num]);
+
+            return result;
         }
 
         /// <summary>
@@ -112,7 +136,11 @@ namespace Linq
             int[] numbersA = { 0, 2, 4, 5, 6, 8, 9 };
             int[] numbersB = { 1, 3, 5, 7, 8 };
 
-            throw new NotImplementedException();
+            var result = numbersA
+        .SelectMany(a => numbersB, (a, b) => (a, b))
+        .Where(pair => pair.a < pair.b);
+
+            return result;
         }
 
         /// <summary>
@@ -123,7 +151,12 @@ namespace Linq
         {
             List<Customer> customers = Customers.CustomerList;
 
-            throw new NotImplementedException();
+            var result = customers
+           .SelectMany(customer => customer.Orders
+               .Where(order => order.Total < 500.00m)
+               .Select(order => (customerId: customer.CustomerId, orderId: order.OrderId, total: order.Total)));
+
+            return result;
         }
 
         /// <summary>
@@ -133,9 +166,18 @@ namespace Linq
         public static IEnumerable<(string customerId, int orderId, string orderDate)> SelectManyWithWhere()
         {
             List<Customer> customers = Customers.CustomerList;
+#pragma warning disable S6562
             var dateTime = new DateTime(1998, 1, 1);
+#pragma warning restore S6562
 
-            throw new NotImplementedException();
+#pragma warning disable CA1305
+            var filteredOrders = customers
+            .SelectMany(customer => customer.Orders
+                .Where(order => order.OrderDate >= dateTime)
+                .Select(order => (customer.CustomerId, order.OrderId, order.OrderDate.ToString("dd-MMM-yy"))));
+#pragma warning restore CA1305
+
+            return filteredOrders;
         }
 
         /// <summary>
@@ -146,7 +188,12 @@ namespace Linq
         {
             List<Customer> customers = Customers.CustomerList;
 
-            throw new NotImplementedException();
+            var selectedOrders = from customer in customers
+                                 from order in customer.Orders
+                                 where order.Total > 2000.00m
+                                 select (customer.CustomerId, order.OrderId, order.Total);
+
+            return selectedOrders;
         }
 
         /// <summary>
@@ -156,10 +203,18 @@ namespace Linq
         public static IEnumerable<(string customerId, int orderId)> SelectMultipleWhereClauses()
         {
             List<Customer> customers = Customers.CustomerList;
+#pragma warning disable S6562
             DateTime cutoffDate = new DateTime(1997, 1, 1);
+#pragma warning restore S6562
             string region = "WA";
 
-            throw new NotImplementedException();
+            var selectedCustomers = customers
+       .Where(customer => customer.Region == region)
+       .SelectMany(customer => customer.Orders
+           .Where(order => order.OrderDate >= cutoffDate)
+           .Select(order => (customer.CustomerId, order.OrderId)));
+
+            return selectedCustomers;
         }
 
         /// <summary>
@@ -170,7 +225,11 @@ namespace Linq
         {
             List<Customer> customers = Customers.CustomerList;
 
-            throw new NotImplementedException();
+            var ordersWithIndexes = customers
+         .SelectMany((customer, index) => customer.Orders.Select(order =>
+             $"Customer #{index + 1} has an order with OrderID {order.OrderId}"));
+
+            return ordersWithIndexes;
         }
     }
 }

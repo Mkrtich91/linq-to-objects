@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Linq.DataSources;
 using Linq.EqualityComparers;
@@ -21,7 +22,11 @@ namespace Linq
         {
             string[] words = { "blueberry", "chimpanzee", "abacus", "banana", "apple", "cheese" };
 
-            throw new NotImplementedException();
+            var groupedAndSortedWords = words
+            .GroupBy(word => word[0])
+            .OrderBy(group => group.Key);
+
+            return groupedAndSortedWords;
         }
 
         /// <summary>
@@ -31,8 +36,10 @@ namespace Linq
         public static IEnumerable<(int remainder, IEnumerable<int> numbers)> Grouping()
         {
             int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
+            var groupedNumbers = numbers.GroupBy(num => num % 5)
+                                               .Select(group => (remainder: group.Key, numbers: (IEnumerable<int>)group));
 
-            throw new NotImplementedException();
+            return groupedNumbers;
         }
 
         /// <summary>
@@ -43,7 +50,11 @@ namespace Linq
         {
             List<Product> products = Products.ProductList;
 
-            throw new NotImplementedException();
+            var groupedProducts = products.GroupBy(product => product.Category)
+                                       .Where(group => group.Count() <= 7)
+                                       .Select(group => (category: group.Key, productsName: group.Select(product => product.ProductName)));
+
+            return groupedProducts;
         }
 
         /// <summary>
@@ -54,7 +65,10 @@ namespace Linq
         {
             string[] anagrams = { "from   ", "  mane", " salt", " earn ", "name   ", "  last   ", " near ", " form  ", "mean" };
 
-            throw new NotImplementedException();
+            var comparer = new AnagramEqualityComparer();
+            var groupedAnagrams = anagrams.GroupBy(word => word.Trim(), comparer);
+
+            return groupedAnagrams;
         }
 
         /// <summary>
@@ -65,7 +79,10 @@ namespace Linq
         {
             string[] anagrams = { "from   ", "  mane", " salt", " earn ", "name   ", "  last   ", " near ", " form  ", "mean" };
 
-            throw new NotImplementedException();
+            return anagrams.GroupBy(
+                keySelector: anagram => anagram.Trim(),
+                elementSelector: anagram => anagram.ToUpperInvariant(),
+                comparer: new AnagramEqualityComparer());
         }
     }
 }
